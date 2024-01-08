@@ -1,0 +1,81 @@
+//Init
+MOV AX,0x0
+MOV [shiftNum],AX
+
+//SHIFT INPUT
+shiftInput:
+
+//Wait for shift input
+wait1:
+MOV AX,[0xF5]
+CMP AX,0x0
+JEQ wait1
+
+//Handle shift input
+MOV BX,[0xF3]        // Read it to register BX
+MOV AX,0x0           // Set status
+MOV [0xF5],AX
+
+//Do not store new line
+CMP BX,0x0A
+JEQ wait2
+
+// Store shift number
+MOV [shiftNum],BX
+
+//Wait for console
+wait2:
+MOV AX,[0xF2]
+CMP AX,0x0
+JNE wait2
+
+//Display user input	
+MOV [0xF0],BX       // Write to console
+MOV AX,0x1
+MOV [0xF2],AX       // Set console status
+
+CMP BX,0x0A
+JNE shiftInput
+
+//TEXT INPUT
+textInput:
+
+//Wait for text input
+wait3:
+MOV AX,[0xF5]
+CMP AX,0x0
+JEQ wait3
+
+//Handle text input
+MOV BX,[0xF3]        // Read it to register BX
+MOV AX,0x0           // Set status
+MOV [0xF5],AX
+
+//Ignore new line
+//CMP BX,0x0A
+//JEQ wait4
+
+//Ignore sybmols
+
+
+//Handle shift
+MOV AX,[shiftNum]      
+ADD BX,AX
+
+//Wait for console
+wait4:
+MOV AX,[0xF2]
+CMP AX,0x0
+JNE wait4
+
+//Output
+MOV [0xF0],BX       // Write to console
+MOV AX,0x1
+MOV [0xF2],AX       // Set console status
+
+//Loop until end of line
+CMP BX,0x0A
+JNE textInput
+
+HALT
+shiftNum: DC.W 0x0
