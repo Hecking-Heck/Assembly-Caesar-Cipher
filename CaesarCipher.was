@@ -52,15 +52,26 @@ MOV AX,0x0           // Set status
 MOV [0xF5],AX
 
 //Ignore new line
-//CMP BX,0x0A
-//JEQ wait4
+CMP BX,0x0A
+JEQ wait4
+
+//Ignore space
+CMP BX,0x20
+JEQ wait4
 
 //Ignore sybmols
 
+//Convert from ASCII
+SUB BX,0x30
 
 //Handle shift
 MOV AX,[shiftNum]      
 ADD BX,AX
+
+CMP BX,0x7B
+JL wait4
+
+SUB BX,0x1A
 
 //Wait for console
 wait4:
