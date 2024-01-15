@@ -59,8 +59,6 @@ JEQ wait4
 CMP BX,0x20
 JEQ wait4
 
-//Ignore sybmols
-
 //Convert from ASCII
 SUB BX,0x30
 
